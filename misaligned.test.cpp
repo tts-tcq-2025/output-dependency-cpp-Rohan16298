@@ -1,3 +1,4 @@
+#include "misalinged.h"
 // Test function to verify the generation of the color map
 void testGenerateColorMap() {
     std::vector<ColorMapEntry> colorMap = generateColorMap();
