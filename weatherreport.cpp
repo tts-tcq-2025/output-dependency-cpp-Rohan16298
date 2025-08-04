@@ -20,6 +20,7 @@ namespace WeatherSpace
     /// without needing the actual Sensor during development
     /// </summary>
     class SensorStub : public IWeatherSensor {
+        public:
         int Humidity() const override {
             return 72;
         }
@@ -36,6 +37,27 @@ namespace WeatherSpace
             return 52;
         }
     };
+
+    // New stub to expose the bug: high precipitation (>60) and low wind speed (<50)
+    class SensorStubHighPrecipLowWind : public IWeatherSensor {
+        public:
+        int Humidity() const override {
+            return 80;
+        }
+
+        int Precipitation() const override {
+            return 65; // high precipitation > 60
+        }
+
+        double TemperatureInC() const override {
+            return 26;
+        }
+
+        int WindSpeedKMPH() const override {
+            return 40; // low wind speed < 50
+        }
+    };
+
     string Report(const IWeatherSensor& sensor)
     {
         int precipitation = sensor.Precipitation();
@@ -62,16 +84,17 @@ namespace WeatherSpace
 
     void TestHighPrecipitation()
     {
-        // This instance of stub needs to be different-
-        // to give high precipitation (>60) and low wind-speed (<50)
-        SensorStub sensor;
+        // Use the new stub with high precipitation and low wind speed
+        SensorStubHighPrecipLowWind sensor;
 
         // strengthen the assert to expose the bug
         // (function returns Sunny day, it should predict rain)
         string report = Report(sensor);
+        cout << report << endl;
         assert(report.length() > 0);
     }
 }
+
 
 void testWeatherReport() {
     cout << "\nWeather report test\n";
