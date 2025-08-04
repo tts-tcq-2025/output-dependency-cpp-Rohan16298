@@ -16,7 +16,10 @@ char size(int cms) {
 void testTshirtSize() {
     std::cout << "\nTshirt size test\n";
     assert(size(37) == 'S');
+    assert(size(38) == 'S');  // New test for boundary value 38
     assert(size(40) == 'M');
+    assert(size(42) == 'M');  // New test for boundary value 42
     assert(size(43) == 'L');
     std::cout << "All is well (maybe!)\n";
 }
+
